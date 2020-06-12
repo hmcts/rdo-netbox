@@ -1,5 +1,5 @@
 touch address_prefixes.json
-
+az account list
 for i in `az account list -o tsv | grep 531ff96d | awk '{print$6}'`; \
 do az account set --subscription $i; \
 az network vnet list --query '[].{Name:name, Location:location, ResourceGroup:resourceGroup, Network:addressSpace.addressPrefixes}' -o json >$i.json; \

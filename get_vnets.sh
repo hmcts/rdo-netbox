@@ -1,4 +1,4 @@
-az account list -o tsv --all | grep 531ff96d | awk '{print$6}' 
+az account list -o tsv --all | awk '{print$6}' 
 
 # touch address_prefixes.json
 # for i in `az account list -o tsv | grep 531ff96d | awk '{print$6}'`; \

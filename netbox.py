@@ -1,4 +1,4 @@
-"""This module populates Netbox with regions, subscriptins and prefixes from Azure"""
+"""This module populates Netbox with regions, subscriptions and prefixes from Azure"""
 import pynetbox
 from colorama import Fore, Style
 from azure_data import prefixes, subscriptions, regions

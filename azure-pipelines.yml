@@ -4,6 +4,8 @@ trigger:
 pr:
 - master
 
+stages:
+
 ############################### STAGING ############################### 
 
 - stage: netbox_stg

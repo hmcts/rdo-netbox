@@ -27,6 +27,8 @@ jobs:
         scriptLocation: 'scriptPath'
         scriptPath: get_vnets.sh
         workingDirectory: $(Build.ArtifactStagingDirectory)
+        addSpnToEnvironment: true
+        failOnStandardError: 'true'
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes

@@ -42,10 +42,9 @@ class Netbox():
                     name=sub,
                     slug=sub)
 
-   def create_prefixes(self):
+    def create_prefixes(self):
         """Creates and updates prefixes in Netbox
         Data is pulled in from Azure"""
-
 
         for item in self.nb.ipam.prefixes.all():
             item.delete()

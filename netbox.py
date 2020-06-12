@@ -4,6 +4,8 @@ from colorama import Fore, Style
 from azure_data import prefixes, subscriptions, regions
 from keyvault import GetSecret
 from variables import Parser
+import urllib3
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 class Netbox():
     """This class is used to interact with Netbox"""

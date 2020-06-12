@@ -23,23 +23,10 @@ jobs:
       displayName: Azure CLI
       inputs:
         azureSubscription: Netbox
-        workingDirectory: $(Build.ArtifactStagingDirectory)
-        scriptLocation: inlineScript
-        addSpnToEnvironment: true
-        failOnStandardError: 'true'
         scriptType: bash
-        inlineScript: |   
-          echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query="id" -o tsv)"
-          echo "##vso[task.setvariable variable=ARM_TENANT_ID]$(az account show --query="tenantId" -o tsv)"
-          echo '##vso[task.setvariable variable=ARM_CLIENT_ID;isOutput=true]$(ARM_CLIENT_ID)'
-          echo '##vso[task.setvariable variable=ARM_CLIENT_SECRET;isOutput=true]$(ARM_CLIENT_SECRET)'
-
-    - task: ShellScript@2
-      displayName: 'Bootstrap Configure AKS'
-      inputs:
+        scriptLocation: 'scriptPath'
         scriptPath: get_vnets.sh
-        #args: '${{ parameters.project }} ${{ parameters.serviceBootstrap }} ${{ parameters.environment }} ${{ parameters.keyVaultName }} ${{ parameters.subscriptionName }} "${{ parameters.command }}" '
-        failOnStderr: true
+        workingDirectory: $(Build.ArtifactStagingDirectory)
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes

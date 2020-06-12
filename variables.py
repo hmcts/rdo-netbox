@@ -14,8 +14,8 @@ class Parser():
         parser.add_argument("--AZURE_TENANT_ID")
         parser.add_argument("--ENVIRONMENT")
         self.args = parser.parse_args()
-        self.args.AZURE_CLIENT_ID = os.environ["AZURE_CLIENT_ID"]
-        self.args.AZURE_CLIENT_SECRET = os.environ["AZURE_CLIENT_SECRET"]
-        self.args.AZURE_TENANT_ID = os.environ["AZURE_TENANT_ID"]
-        self.args.KEY_VAULT_NAME = os.environ["KEY_VAULT_NAME"]
-        self.args.ENVIRONMENT = os.environ["ENVIRONMENT"]
+        os.environ["AZURE_CLIENT_ID"] = self.args.AZURE_CLIENT_ID
+        os.environ["AZURE_CLIENT_SECRET"] = self.args.AZURE_CLIENT_SECRET
+        os.environ["AZURE_TENANT_ID"] = self.args.AZURE_TENANT_ID
+        os.environ["KEY_VAULT_NAME"] = self.args.KEY_VAULT_NAME
+        os.environ["ENVIRONMENT"] self.args.ENVIRONMENT

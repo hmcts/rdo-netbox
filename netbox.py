@@ -14,7 +14,7 @@ class Netbox():
         Parser.parse_var(self)
         self.url = GetSecret(f"{self.args.ENVIRONMENT}-netbox-url").secret_value
         self.token = GetSecret(f"{self.args.ENVIRONMENT}-netbox-token").secret_value
-        self.nb = pynetbox.api(f"https://{self.url}", {self.token}, ssl_verify=False)
+        self.nb = pynetbox.api(f"https://{self.url}", self.token, ssl_verify=False)
 
         Netbox.create_site(self)
         Netbox.create_subscriptions(self)

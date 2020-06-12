@@ -1,0 +1,25 @@
+trigger:
+- master
+
+pr:
+- master
+
+############################### STAGING ############################### 
+
+- stage: netbox_stg
+  displayName: Netbox Staging
+  jobs:
+  - template: pipeline-templates/deploy.yml
+    parameters:
+      environment: 'stg'
+
+############################### PROD ############################### 
+
+- stage: netbox_prod
+  displayName: Netbox Prod
+  dependsOn: netbox_stg
+  condition: succeeded('netbox_stg')
+  jobs:
+  - template: pipeline-templates/deploy.yml
+    parameters:
+      environment: 'prod'

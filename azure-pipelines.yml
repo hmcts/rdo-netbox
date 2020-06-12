@@ -11,7 +11,7 @@ stages:
 - stage: netbox_stg
   displayName: Netbox Staging
   jobs:
-  - template: pipeline-templates/deploy.yml
+  - template: pipeline-templates/deploy.yaml
     parameters:
       environment: 'stg'
 
@@ -22,6 +22,6 @@ stages:
   dependsOn: netbox_stg
   condition: succeeded('netbox_stg')
   jobs:
-  - template: pipeline-templates/deploy.yml
+  - template: pipeline-templates/deploy.yaml
     parameters:
       environment: 'prod'

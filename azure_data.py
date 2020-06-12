@@ -6,6 +6,11 @@ FILENAME = "address_prefixes.json"
 with open(FILENAME, "r") as r:
     data = json.load(r)
 
+SUBS = "subs.json"
+
+with open(SUBS, "r") as r:
+    subs_data = json.load(r)
+
 prefixes = []
 subscriptions = []
 regions = []
@@ -19,8 +24,9 @@ for element in data:
                              "resource_group": element["ResourceGroup"],
                              "vnet": element["Name"]}
                         })
-        if not element["ID"] in subscriptions:
-            subscriptions.append(element["ID"])
-
         if not element["Location"] in regions:
             regions.append(element["Location"])
+
+for element in subs_data:
+    if not element["Name"] in subscriptions:
+        subscriptions.append(element["Name"])

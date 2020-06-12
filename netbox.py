@@ -42,7 +42,7 @@ class Netbox():
                     name=sub,
                     slug=sub)
 
-    def create_prefixes(self):
+   def create_prefixes(self):
         """Creates and updates prefixes in Netbox
         Data is pulled in from Azure"""
 
@@ -67,6 +67,18 @@ class Netbox():
                     for item in self.nb.ipam.prefixes.filter(prefix=prefix["prefix"]):
                         if prefix["custom_fields"] == item.custom_fields:
                             item.update(prefix)
+                        else:
+                            self.nb.ipam.prefixes.create(
+                                prefix=prefix["prefix"],
+                                site=prefix["location"],
+                                tenant=prefix["subscription"],
+                                custom_fields=prefix["custom_fields"])
+                            print(f"{Fore.YELLOW}Added to Netbox (Overlap):")
+                            print(f"{Style.RESET_ALL}Subscription: {prefix['subscription']['name']}")
+                            print(f"Resource Group: {prefix['custom_fields']['resource_group']}")
+                            print(f"Vnet: {prefix['custom_fields']['vnet']}")
+                            print(f"Prefix: {prefix['prefix']}\n")
+                            break
                 else:
                     if not prefix["custom_fields"] == self.nb.ipam.prefixes.get(
                                                         prefix=prefix["prefix"]).custom_fields:

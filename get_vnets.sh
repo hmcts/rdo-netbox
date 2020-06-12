@@ -1,4 +1,6 @@
 az login --service-principal -u $servicePrincipalId --password=$servicePrincipalKey --tenant $tenantId
+
+az account list --query "[?tenantId==$tenantId].{Name:name}" -o json > subs.json
 touch address_prefixes.json
 
 for i in `az account list -o tsv | grep 531ff96d | awk '{print$6}'`; \

@@ -24,6 +24,7 @@ jobs:
       inputs:
         azureSubscription: HMCTS-HUB-PROD-INTSVC
         workingDirectory: $(Build.ArtifactStagingDirectory)
+        scriptLocation: inlineScript
         addSpnToEnvironment: true
         failOnStandardError: 'true'
         inlineScript: |   

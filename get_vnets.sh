@@ -1,4 +1,4 @@
-az login --service-principal -u $servicePrincipalId --password=$servicePrincipalKey --tenant $AZURE_TENANT_ID
+az login --service-principal -u $servicePrincipalId --password=$servicePrincipalKey --tenant $tenantId
 touch address_prefixes.json
 
 for i in `az account list -o tsv | grep 531ff96d | awk '{print$6}'`; \

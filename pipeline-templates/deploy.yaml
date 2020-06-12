@@ -28,7 +28,7 @@ jobs:
         scriptLocation: 'scriptPath'
         scriptPath: get_vnets.sh
         workingDirectory: $(Build.ArtifactStagingDirectory)
-        arguments: --AZURE_TENANT_ID $(AZURE_TENANT_ID)
+        arguments: AZURE_TENANT_ID $(AZURE_TENANT_ID)
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes

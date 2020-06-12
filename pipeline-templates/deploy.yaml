@@ -22,6 +22,7 @@ jobs:
     - task: AzureCLI@2
       displayName: Azure CLI
       inputs:
+        addSpnToEnvironment: True
         azureSubscription: Netbox
         scriptType: bash
         scriptLocation: 'scriptPath'

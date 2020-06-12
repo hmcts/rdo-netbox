@@ -1,5 +1,5 @@
 jobs:
-  - job: Populate Netbox
+  - job: Populate_Netbox
     pool:
         name: rdo-backup-prod
         vmImage: Ubuntu-18.04

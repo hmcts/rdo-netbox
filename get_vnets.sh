@@ -1,4 +1,5 @@
-az account list -o tsv 
+az account list -o tsv | grep 531ff96d | awk '{print$6}' --all
+az network vnet list
 # touch address_prefixes.json
 # for i in `az account list -o tsv | grep 531ff96d | awk '{print$6}'`; \
 # do az account set --subscription $i; \

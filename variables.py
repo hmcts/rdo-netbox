@@ -18,4 +18,4 @@ class Parser():
         os.environ["AZURE_CLIENT_SECRET"] = self.args.AZURE_CLIENT_SECRET
         os.environ["AZURE_TENANT_ID"] = self.args.AZURE_TENANT_ID
         os.environ["KEY_VAULT_NAME"] = self.args.KEY_VAULT_NAME
-        os.environ["ENVIRONMENT"] self.args.ENVIRONMENT
+        os.environ["ENVIRONMENT"] = self.args.ENVIRONMENT

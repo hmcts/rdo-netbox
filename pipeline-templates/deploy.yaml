@@ -17,7 +17,7 @@ jobs:
       inputs:
         targetType: inline
         workingDirectory: $(System.DefaultWorkingDirectory)
-        script: get_vnets.sh
+        script: ./get_vnets.sh
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes

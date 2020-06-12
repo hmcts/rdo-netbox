@@ -24,13 +24,13 @@ jobs:
       inputs:
         azureSubscription: HMCTS-HUB-PROD-INTSVC
         scriptType: bash
-        scriptLocation: 'scriptPath'
+        scriptLocation: $(Build.ArtifactStagingDirectory)
         scriptPath: get_vnets.sh
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes
       inputs:
-        scriptSource: 'filePath'
+        scriptSource: $(Build.ArtifactStagingDirectory)
         scriptPath: netbox.py
         arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME) --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
         workingDirectory: $(Build.ArtifactStagingDirectory)

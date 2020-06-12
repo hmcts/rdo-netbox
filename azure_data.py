@@ -1,7 +1,5 @@
 """This module extracts regions, subscriptins and prefixes from Azure"""
-import json,os
-
-print(os.getcwd())
+import json
 
 FILENAME = "address_prefixes.json"
 

@@ -25,4 +25,4 @@ jobs:
     - task: PublishPipelineArtifact@1
       inputs:
         artifactName: 'drop'
-        targetPath: '$(System.DefaultWorkingDirectory)/drop'
+        targetPath: '$(System.DefaultWorkingDirectory)'

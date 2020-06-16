@@ -10,7 +10,7 @@ jobs:
       inputs:
         source: 'current'
         artifact: 'drop'
-        path: '$(System.DefaultWorkingDirectory)/drop'
+        path: '$(System.DefaultWorkingDirectory)'
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes

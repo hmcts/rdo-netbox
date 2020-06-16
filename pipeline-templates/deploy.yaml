@@ -6,11 +6,11 @@ jobs:
 
     steps:
 
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        source: 'current'
-        artifact: 'drop'
-        path: '$(System.DefaultWorkingDirectory)'
+    # - task: DownloadPipelineArtifact@1
+    #   inputs:
+    #     source: 'current'
+    #     artifact: 'drop'
+    #     path: '$(System.DefaultWorkingDirectory)'
 
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes
@@ -18,4 +18,4 @@ jobs:
         scriptSource: 'filePath'
         scriptPath: netbox.py
         arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME) --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
-        workingDirectory: $(Build.ArtifactStagingDirectory)
+        workingDirectory: $(System.DefaultWorkingDirectory)

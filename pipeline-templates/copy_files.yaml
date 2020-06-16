@@ -9,7 +9,7 @@ jobs:
       displayName: Copy files
       inputs:
         contents: '**'
-        TargetFolder: $(Build.ArtifactStagingDirectory)
+        TargetFolder: $(System.DefaultWorkingDirectory)
         cleanTargetFolder: true
 
     - task: AzureCLI@2
@@ -20,9 +20,9 @@ jobs:
         scriptType: bash
         scriptLocation: 'scriptPath'
         scriptPath: get_vnets.sh
-        workingDirectory: $(Build.ArtifactStagingDirectory)
+        workingDirectory: $(System.DefaultWorkingDirectory)
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        artifactName: 'drop'
-        targetPath: '$(System.DefaultWorkingDirectory)'
+    # - task: PublishPipelineArtifact@1
+    #   inputs:
+    #     artifactName: 'drop'
+    #     targetPath: '$(System.DefaultWorkingDirectory)'

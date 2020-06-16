@@ -21,3 +21,8 @@ jobs:
         scriptLocation: 'scriptPath'
         scriptPath: get_vnets.sh
         workingDirectory: $(Build.ArtifactStagingDirectory)
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        artifactName: 'drop'
+        targetPath: '$(System.DefaultWorkingDirectory)/perftest'

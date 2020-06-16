@@ -6,10 +6,19 @@ pr:
 
 stages:
 
+############################### INIT ############################### 
+
+- stage: init
+  displayName: Init
+  jobs:
+  - template: pipeline-templates/copy_files.yaml
+
 ############################### STAGING ############################### 
 
 - stage: netbox_stg
   displayName: Netbox Staging
+  dependsOn: init
+  condition: succeeded('init')
   jobs:
   - template: pipeline-templates/deploy.yaml
     parameters:

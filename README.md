@@ -18,4 +18,4 @@ Questions? Comments? Please ask in the #devops Slack channel
 
 |             | status |
 |-------------|------------|
-| **master** | [![Build Status](https://dev.azure.com/hmcts/DevOps/_apis/build/status/hmcts.rdo-netbox?branchName=master)](https://travis-ci.com/netbox-community/netbox/) |
+| **master** | [![Build Status](https://dev.azure.com/hmcts/DevOps/_apis/build/status/hmcts.rdo-netbox?branchName=master)](https://dev.azure.com/hmcts/DevOps/_build?definitionId=345) |

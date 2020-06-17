@@ -29,23 +29,29 @@ Click [here](https://netbox.platform.hmcts.net) to access the instance. (You mus
 
 You can view currently assigned network prefixes and assign yourself an available prefix based on the data.
 
-### Programmatic access
+#### Curl commands
 
 In order to make Restful calls to Netbox, you need to ensure you are connected to the VPN and be using the HMCTS proxy
 to be able to reach the Netbox instance.
 
 In order to GET a prefix to see if it exists, enter a command such as:
-```
+```bash
 curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?prefix=10.230.6.0%2F24 -H "accept: application/json" | json_pp
 ```
 
 To pull ALL prefixes, use:
-```
+```bash
 curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/ -H "accept: application/json" | json_pp
 ```
 
-To grab a list of Subscriptions, use:
+To grab a prefix from a specific vnet name, use:
+```bash
+curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?cf_vnet="datalake-rg-vnet" -H "accept: application/json" |
+ json_pp
 ```
+
+To grab a list of Subscriptions, use:
+```bash
 curl -X GET -k https://netbox.platform.hmcts.net:443/api/tenancy/tenants/ -H "accept: application/json" | json_pp
 ```
 
@@ -53,23 +59,23 @@ curl -X GET -k https://netbox.platform.hmcts.net:443/api/tenancy/tenants/ -H "ac
 
 You can do more with the Netbox Python SDK such as make a call for the next available prefix.
 
-### Prereqs
+#### Prereqs
 
 1) In order to be able to use it, you will need to get in contact with the devops team in the #devops
 channel to request a token to access the instance with `Pynetbox`.
 
 2) Install Python3 and the [Pynetbox](https://pypi.org/project/pynetbox/) module.
    
-### Quick start
+#### Quick start
 
 Ensure you have environmental variables for `NETBOX_TOKEN` and `NETBOX_URL`
-```
+```bash
 export NETBOX_TOKEN=[token]
 export NETBOX_URL=[url]
 ```
 
 Create a python file with the below contents
-```
+```python
 import pynetbox
 import urllib3, os
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -80,5 +86,26 @@ NETBOX_TOKEN = os.environ.get("NETBOX_TOKEN")
 
 nb = pynetbox.api(f"http://{NETBOX_URL}", NETBOX_TOKEN, ssl_verify=False)
 import ipdb; ipdb.set_trace()
+```
+
+To see what prefixes live under a specific range, you can use the `filter` verb like:
+```python
+ipdb> nb.ipam.prefixes.filter(q="10.99.50.0/24")                                                                                                                     
+[10.99.0.0/18, 10.99.0.0/18, 10.99.0.0/18]
+```
+
+To get a specific prefix and to see what available child prefixes exist, run something like this:
+```python
+ipdb> nb.ipam.prefixes.get(prefix="172.16.7.0/24").available_prefixes.list()                                                                                         
+[{'family': 4, 'prefix': '172.16.7.0/24', 'vrf': None}]
+```
+
+To filter on the name of the vnet or resource group, use:
+```python
+ipdb> nb.ipam.prefixes.filter(cf_resource_group="datalake-rg")
+[172.16.7.0/24]
+
+ipdb> nb.ipam.prefixes.filter(cf_vnet="datalake-rg-vnet")
+[172.16.7.0/24]
 ```
 

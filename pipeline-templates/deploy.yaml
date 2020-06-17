@@ -17,5 +17,5 @@ jobs:
       inputs:
         scriptSource: 'filePath'
         scriptPath: $(Build.ArtifactStagingDirectory)/drop/netbox.py
-        arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME) --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
+        arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
         workingDirectory: $(Build.ArtifactStagingDirectory)/drop/

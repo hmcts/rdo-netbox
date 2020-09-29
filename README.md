@@ -4,8 +4,8 @@ NetBox is an IP address management (IPAM) and data center infrastructure
 management (DCIM) tool. It is intended to function as a domain-specific source of truth for network operations.
 
 HMCTS NetBox runs as a web application atop the Django Python framework
-with a PostgreSQL database and a Redis Cache hosted in Azure
-This Netbox module is used grab every network prefix in use in HMCTS Azure
+with a PostgreSQL database and a Redis Cache hosted in Azure.
+This Netbox module is used to grab every network prefix in use in HMCTS Azure
 and populates the Netbox instance and will serve as a single source of truth for
 all things IPAM.
 

@@ -4,8 +4,8 @@ NetBox is an IP address management (IPAM) and data center infrastructure
 management (DCIM) tool. It is intended to function as a domain-specific source of truth for network operations.
 
 HMCTS NetBox runs as a web application atop the Django Python framework
-with a PostgreSQL database and a Redis Cache hosted in Azure
-This Netbox module is used grab every network prefix in use in HMCTS Azure
+with a PostgreSQL database and a Redis Cache hosted in Azure.
+This Netbox module is used to grab every network prefix in use in HMCTS Azure
 and populates the Netbox instance and will serve as a single source of truth for
 all things IPAM.
 
@@ -36,23 +36,28 @@ to be able to reach the Netbox instance.
 
 In order to GET a prefix to see if it exists, enter a command such as:
 ```bash
-curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?prefix=10.230.6.0%2F24 -H "accept: application/json" | json_pp
+curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?prefix=10.230.6.0%2F24 -H "accept: application/json" | jq .
 ```
 
 To pull ALL prefixes, use:
 ```bash
-curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/ -H "accept: application/json" | json_pp
+curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/ -H "accept: application/json" | jq .
+```
+
+To find any prefixes within a prefix, use:
+```bash
+curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?within=10.50.0.0%2F16 -H "accept: application/json" | jq .
 ```
 
 To grab a prefix from a specific vnet name, use:
 ```bash
 curl -X GET -k https://netbox.platform.hmcts.net:443/api/ipam/prefixes/?cf_vnet="datalake-rg-vnet" -H "accept: application/json" |
- json_pp
+ jq .
 ```
 
 To grab a list of Subscriptions, use:
 ```bash
-curl -X GET -k https://netbox.platform.hmcts.net:443/api/tenancy/tenants/ -H "accept: application/json" | json_pp
+curl -X GET -k https://netbox.platform.hmcts.net:443/api/tenancy/tenants/ -H "accept: application/json" | jq .
 ```
 
 ### Using the Pynetbox SDK

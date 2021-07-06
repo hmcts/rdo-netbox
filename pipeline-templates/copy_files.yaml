@@ -1,7 +1,7 @@
 jobs:
   - job: Init
     pool:
-        name: rdo-backup-prod
+        name: hmcts-cftptl-agent-pool
         vmImage: Ubuntu-18.04
 
     steps:

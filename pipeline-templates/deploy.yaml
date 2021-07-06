@@ -19,3 +19,4 @@ jobs:
         scriptPath: $(Build.ArtifactStagingDirectory)/drop/netbox.py
         arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
         workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
+        pythonInterpreter: '/usr/bin/python3'

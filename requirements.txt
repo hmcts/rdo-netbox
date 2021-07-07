@@ -1,0 +1,2 @@
+colorama
+pynetbox >= 6.1.2

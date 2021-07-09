@@ -1,2 +1,3 @@
+azure
 colorama
 pynetbox

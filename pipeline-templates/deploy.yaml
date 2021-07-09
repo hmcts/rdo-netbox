@@ -11,9 +11,17 @@ jobs:
           artifact: "drop"
           path: "$(Build.ArtifactStagingDirectory)"
 
-      - task: Bash@3
-        displayName: Populate Netbox with Azure Prefixes
-        inputs:
-          filePath: ./python3-deploy.sh
-          arguements: netbox.py
-          workingDirectory: $(Build.ArtifactStagingDirectory)/drop
+    - task: AzureCLI@2
+      displayName: Populate Netbox with Azure Prefixes
+      inputs:
+        workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          #!/bin/bash
+          set -e
+          python3 -m venv rdo-netbox
+          . ./rdo-netbox/bin/activate
+          python3 -m pip install -U pip
+          pip install --upgrade -r $(Build.ArtifactStagingDirectory)/drop/requirements.txt
+          python3 $(Build.ArtifactStagingDirectory)/drop/netbox.py --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)

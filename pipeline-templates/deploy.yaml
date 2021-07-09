@@ -1,22 +1,27 @@
 jobs:
   - job: Populate_Netbox
     pool:
-        name: hmcts-cftptl-agent-pool
-        vmImage: Ubuntu-18.04
+      name: hmcts-cftptl-agent-pool
+      vmImage: Ubuntu-18.04
 
     steps:
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          source: "current"
+          artifact: "drop"
+          path: "$(Build.ArtifactStagingDirectory)"
 
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        source: 'current'
-        artifact: 'drop'
-        path: '$(Build.ArtifactStagingDirectory)'
-
-    - task: PythonScript@0
+    - task: AzureCLI@2
       displayName: Populate Netbox with Azure Prefixes
       inputs:
-        scriptSource: 'filePath'
-        scriptPath: $(Build.ArtifactStagingDirectory)/drop/netbox.py
-        arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
         workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
-        pythonInterpreter: '/usr/bin/python3'
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          #!/bin/bash
+          set -e
+          python3 -m venv rdo-netbox
+          . ./rdo-netbox/bin/activate
+          python3 -m pip install -U pip
+          pip install --upgrade -r $(Build.ArtifactStagingDirectory)/drop/requirements.txt
+          python3 $(Build.ArtifactStagingDirectory)/drop/netbox.py --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)

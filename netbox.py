@@ -1,5 +1,6 @@
 """This module populates Netbox with regions, subscriptions and prefixes from Azure"""
 import pynetbox
+import requests
 from colorama import Fore, Style
 from azure_data import prefixes, subscriptions, regions
 from keyvault import GetSecret
@@ -18,6 +19,11 @@ class Netbox():
         self.url = GetSecret("netbox-url").secret_value
         self.token = GetSecret("netbox-token").secret_value
         self.nb = pynetbox.api(f"https://{self.url}", self.token)
+
+        # Disable SSL Vertification
+        session = requests.Session()
+        session.verify = False
+        self.nb.http_session = session
 
         Netbox.create_site(self)
         Netbox.create_subscriptions(self)

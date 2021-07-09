@@ -1,4 +1,6 @@
 azure
+azure.core.exceptions
+azure.identity
 azure-keyvault-secrets
 colorama
 pynetbox

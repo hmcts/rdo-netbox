@@ -14,6 +14,7 @@ jobs:
       - task: AzureCLI@2
         displayName: Populate Netbox with Azure Prefixes
         inputs:
+          azureSubscription: HMCTS-HUB-${{ parameters.subenv }}-INTSVC
           workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
           scriptType: bash
           scriptLocation: inlineScript

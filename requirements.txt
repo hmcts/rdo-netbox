@@ -1,5 +1,4 @@
-azure
-azure.core.exceptions
+azure.core
 azure.identity
 azure-keyvault-secrets
 colorama

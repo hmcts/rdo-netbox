@@ -11,14 +11,12 @@ jobs:
           artifact: "drop"
           path: "$(Build.ArtifactStagingDirectory)"
 
-      - task: AzureCLI@2
+      - task: Bash@3
         displayName: Populate Netbox with Azure Prefixes
         inputs:
-          azureSubscription: HMCTS-HUB-${{ parameters.subenv }}-INTSVC
           workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
-          scriptType: bash
-          scriptLocation: inlineScript
-          inlineScript: |
+          targetType: inline
+          script: |
             #!/bin/bash
             set -e
             python3 -m venv rdo-netbox

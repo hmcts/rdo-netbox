@@ -1,2 +1,6 @@
+azure.core
+azure.identity
+azure-keyvault-secrets
 colorama
 pynetbox
+requests

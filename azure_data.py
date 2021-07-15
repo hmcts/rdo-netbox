@@ -25,13 +25,13 @@ class AzureVnets:
     def _pull_subscriptions(self):
         sub_client = SubscriptionClient(self.credentials)
         self.azure_subs = [sub.as_dict() for sub in sub_client.subscriptions.list()]
-        self.subscriptions = [{"Name": sub["display_name"]} for sub in self.azure_subs]
+        self.subscriptions = [{"name": sub["display_name"]} for sub in self.azure_subs]
 
     def _pull_resource_groups(self):
         for sub in self.subscriptions:
             rg_client = ResourceManagementClient(self.credentials, sub["subscription_id"])
             azure_rgs = [rg.as_dict() for rg in rg_client.resource_groups.list()]
-            rgs = [{"Name": rg["name"]} for rg in azure_rgs]
+            rgs = [{"name": rg["name"]} for rg in azure_rgs]
             sub["resource_groups"] = rgs
 
     def _update_regions(self):

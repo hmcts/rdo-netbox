@@ -26,6 +26,7 @@ class AzureVnets:
         sub_client = SubscriptionClient(self.credentials)
         self.azure_subs = [sub.as_dict() for sub in sub_client.subscriptions.list()]
         self.subscriptions = [{"name": sub["display_name"]} for sub in self.azure_subs]
+        self.subscriptions.append("external")
 
     def _pull_resource_groups(self):
         for sub in self.subscriptions:
@@ -36,6 +37,7 @@ class AzureVnets:
 
     def _update_regions(self):
         unique_regions = set([pref["location"]["name"] for pref in self.internal_prefixes if pref["location"] is not None])
+        unique_regions.append("external")
         self.regions = list(unique_regions)
 
     def _pull_prefixes(self):

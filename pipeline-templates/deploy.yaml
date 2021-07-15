@@ -15,7 +15,13 @@ jobs:
     - task: PythonScript@0
       displayName: Populate Netbox with Azure Prefixes
       inputs:
-        scriptSource: 'filePath'
-        scriptPath: $(Build.ArtifactStagingDirectory)/drop/netbox.py
-        arguments: --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME $(KEY_VAULT_NAME)-${{ parameters.environment }} --AZURE_TENANT_ID $(AZURE_TENANT_ID) --AZURE_CLIENT_ID $(AZURE_CLIENT_ID) --AZURE_CLIENT_SECRET $(AZURE_CLIENT_SECRET)
-        workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
+        azureSubscription: HMCTS-HUB-${{ parameters.subenv }}-INTSVC
+          workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
+          scriptType: bash
+          scriptLocation: inlineScript
+          inlineScript: |
+            #!/bin/bash
+            set -e
+            client_id="$(az keyvault secret show --name client-id --vault-name netbox-vault-${{ parameters.environment }} --query value --output tsv)"
+            client_secret="$(az keyvault secret show --name client-secret --vault-name netbox-vault-${{ parameters.environment }} --query value --output tsv)"
+            python $(Build.ArtifactStagingDirectory)/drop/scripts/netbox.py --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME netbox-vault-${{ parameters.environment }} --AZURE_TENANT_ID ${{ parameters.tenantId }} --AZURE_CLIENT_ID $client_id --AZURE_CLIENT_SECRET $client_secret

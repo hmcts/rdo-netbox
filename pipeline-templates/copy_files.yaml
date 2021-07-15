@@ -12,16 +12,6 @@ jobs:
         TargetFolder: $(Build.ArtifactStagingDirectory)
         cleanTargetFolder: true
 
-    - task: AzureCLI@2
-      displayName: Azure CLI
-      inputs:
-        addSpnToEnvironment: True
-        azureSubscription: Netbox
-        scriptType: bash
-        scriptLocation: 'scriptPath'
-        scriptPath: get_vnets.sh
-        workingDirectory: $(Build.ArtifactStagingDirectory)
-
     - task: PublishPipelineArtifact@1
       inputs:
         artifactName: 'drop'

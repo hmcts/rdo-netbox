@@ -1,13 +1,16 @@
 """This module populates Netbox with regions, subscriptions and prefixes from Azure"""
+import os
 import pynetbox
 from colorama import Fore, Style
-from azure_data import prefixes, subscriptions, regions
+import azure_data
 from keyvault import GetSecret
 from variables import Parser
 import urllib3
+
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-class Netbox():
+
+class Netbox:
     """This class is used to interact with Netbox"""
 
     def __init__(self):
@@ -17,25 +20,21 @@ class Netbox():
         self.url = GetSecret("netbox-url").secret_value
         self.token = GetSecret("netbox-token").secret_value
         self.nb = pynetbox.api(f"https://{self.url}", self.token, ssl_verify=False)
-
-        Netbox.create_site(self)
-        Netbox.create_subscriptions(self)
-        Netbox.get_prefixes(self)
-        Netbox.remove_prefixes(self)
+        self.az_data = azure_data.AzureVnets()
 
     # def create_tags(self):
     #     """Creates tags in Netbox, e.g owner.
     #     Data is pulled in from Azure"""
 
     #     if not self.nb.extras.tags.get(name='azure'):
-    #         self.nb.extras.tags.create(name='azure', 
+    #         self.nb.extras.tags.create(name='azure',
     #                                    slug= 'azure')
 
     def create_site(self):
         """Creates sites in Netbox, e.g uksouth.
         Data is pulled in from Azure"""
 
-        for site in regions:
+        for site in self.az_data.regions:
             if not self.nb.dcim.sites.get(name=site):
                 self.nb.dcim.sites.create(
                     name=site,
@@ -45,7 +44,7 @@ class Netbox():
         """Creates Subscriptions in Netbox
         Data is pulled in from Azure"""
 
-        for sub in subscriptions:
+        for sub in self.az_data.subscriptions:
             if not self.nb.tenancy.tenants.get(name=sub['name']):
                 self.nb.tenancy.tenants.create(
                     name=sub['name'],
@@ -57,9 +56,9 @@ class Netbox():
         removed from Netbox
         Data is pulled in from Azure"""
             
-        for self.prefix in prefixes:
+        for self.prefix in self.az_data.prefixes:
             if not self.prefix["prefix"] in str(self.nb.ipam.prefixes.all()):
-                Netbox.add_prefixes(self,"GREEN")
+                Netbox.add_prefixes(self, "GREEN")
             else:
                 if len(self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])) > 1:
                     for item in self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"]):
@@ -67,19 +66,19 @@ class Netbox():
                             self.prefix["exists"] = True
                     for item in self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"]):
                         if not self.prefix.get('exists', False):
-                            Netbox.add_prefixes(self,"YELLOW") 
+                            Netbox.add_prefixes(self, "YELLOW")
                 else:
                     if not self.prefix["custom_fields"] == self.nb.ipam.prefixes.get(
                                                         prefix=self.prefix["prefix"]).custom_fields:
-                        Netbox.add_prefixes(self,"YELLOW")
+                        Netbox.add_prefixes(self, "YELLOW")
 
     def add_prefixes(self, code):
         """Creates and updates prefixes in Netbox
         Data is pulled in from Azure"""
 
         map_values = {
-            "GREEN":"Added to Netbox:",
-            "YELLOW":"Added to Netbox (IP overlap):",
+            "GREEN": "Added to Netbox:",
+            "YELLOW": "Added to Netbox (IP overlap):",
             }
 
         colour = getattr(Fore, code)
@@ -96,14 +95,13 @@ class Netbox():
         print(f"Resource Group: {self.prefix['custom_fields']['resource_group']}")
         print(f"Virtual Network: {self.prefix['custom_fields']['vnet']}\n")
  
-
     def remove_prefixes(self):
         """Removes prefixes in Netbox"""
 
         delete = []
         for item in self.nb.ipam.prefixes.all():
             delete.append(item)
-            for self.prefix in prefixes:
+            for self.prefix in self.az_data.prefixes:
                 if item.custom_fields == self.prefix["custom_fields"]:
                     if delete.__contains__(item):
                         delete.remove(item)
@@ -118,4 +116,9 @@ class Netbox():
                     
 
 if __name__ == "__main__":
-    Netbox()
+    netbox = Netbox()
+    netbox.az_data.load_data()
+    netbox.create_site()
+    netbox.create_subscriptions()
+    netbox.get_prefixes()
+    netbox.remove_prefixes()

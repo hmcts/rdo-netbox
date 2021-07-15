@@ -2,3 +2,8 @@
 __pycache__/
 *.py[cod]
 *.json
+
+.idea/
+*.iml
+
+!static_data/*.json

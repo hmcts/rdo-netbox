@@ -37,7 +37,7 @@ class AzureVnets:
 
     def _update_regions(self):
         unique_regions = set([pref["location"]["name"] for pref in self.internal_prefixes if pref["location"] is not None])
-        unique_regions.append("external")
+        unique_regions.add("external")
         self.regions = list(unique_regions)
 
     def _pull_prefixes(self):

@@ -26,7 +26,7 @@ class AzureVnets:
         sub_client = SubscriptionClient(self.credentials)
         self.azure_subs = [sub.as_dict() for sub in sub_client.subscriptions.list()]
         self.subscriptions = [{"name": sub["display_name"]} for sub in self.azure_subs]
-        self.subscriptions.append("external")
+        self.subscriptions.append({"name": "external"})
 
     def _pull_resource_groups(self):
         for sub in self.subscriptions:

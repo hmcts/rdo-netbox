@@ -1,21 +1,20 @@
 jobs:
   - job: Populate_Netbox
     pool:
-        name: rdo-backup-prod
-        vmImage: Ubuntu-18.04
+      name: hmcts-cftptl-agent-pool
+      vmImage: Ubuntu-18.04
 
     steps:
+      - task: DownloadPipelineArtifact@1
+        inputs:
+          source: "current"
+          artifact: "drop"
+          path: "$(Build.ArtifactStagingDirectory)"
 
-    - task: DownloadPipelineArtifact@1
-      inputs:
-        source: 'current'
-        artifact: 'drop'
-        path: '$(Build.ArtifactStagingDirectory)'
-
-    - task: PythonScript@0
-      displayName: Populate Netbox with Azure Prefixes
-      inputs:
-        azureSubscription: HMCTS-HUB-${{ parameters.subenv }}-INTSVC
+      - task: AzureCLI@2
+        displayName: Populate Netbox with Azure Prefixes
+        inputs:
+          azureSubscription: Netbox
           workingDirectory: $(Build.ArtifactStagingDirectory)/drop/
           scriptType: bash
           scriptLocation: inlineScript
@@ -24,4 +23,8 @@ jobs:
             set -e
             client_id="$(az keyvault secret show --name client-id --vault-name netbox-vault-${{ parameters.environment }} --query value --output tsv)"
             client_secret="$(az keyvault secret show --name client-secret --vault-name netbox-vault-${{ parameters.environment }} --query value --output tsv)"
-            python $(Build.ArtifactStagingDirectory)/drop/scripts/netbox.py --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME netbox-vault-${{ parameters.environment }} --AZURE_TENANT_ID ${{ parameters.tenantId }} --AZURE_CLIENT_ID $client_id --AZURE_CLIENT_SECRET $client_secret
+            python3 -m venv rdo-netbox
+            . ./rdo-netbox/bin/activate
+            python3 -m pip install -U pip
+            pip install --upgrade -r $(Build.ArtifactStagingDirectory)/drop/requirements.txt
+            python3 $(Build.ArtifactStagingDirectory)/drop/netbox.py --ENVIRONMENT ${{ parameters.environment }} --KEY_VAULT_NAME netbox-vault-${{ parameters.environment }} --AZURE_TENANT_ID ${{ parameters.tenantId }} --AZURE_CLIENT_ID $client_id --AZURE_CLIENT_SECRET $client_secret

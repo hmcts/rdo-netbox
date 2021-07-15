@@ -1,6 +1,6 @@
 """This module populates Netbox with regions, subscriptions and prefixes from Azure"""
-import os
 import pynetbox
+import requests
 from colorama import Fore, Style
 import azure_data
 from keyvault import GetSecret
@@ -19,7 +19,11 @@ class Netbox:
         Parser.parse_var(self)
         self.url = GetSecret("netbox-url").secret_value
         self.token = GetSecret("netbox-token").secret_value
-        self.nb = pynetbox.api(f"https://{self.url}", self.token, ssl_verify=False)
+        self.nb = pynetbox.api(f"https://{self.url}", self.token)
+        # Disable SSL Vertification
+        session = requests.Session()
+        session.verify = False
+        self.nb.http_session = session
         self.az_data = azure_data.AzureVnets()
 
     # def create_tags(self):
@@ -52,10 +56,9 @@ class Netbox:
                     description=sub['description'])
 
     def get_prefixes(self):
-        """Checks if prefixes need to be added or 
+        """Checks if prefixes need to be added or
         removed from Netbox
         Data is pulled in from Azure"""
-            
         for self.prefix in self.az_data.prefixes:
             if not self.prefix["prefix"] in str(self.nb.ipam.prefixes.all()):
                 Netbox.add_prefixes(self, "GREEN")
@@ -79,22 +82,23 @@ class Netbox:
         map_values = {
             "GREEN": "Added to Netbox:",
             "YELLOW": "Added to Netbox (IP overlap):",
-            }
+        }
 
         colour = getattr(Fore, code)
         self.nb.ipam.prefixes.create(
             prefix=self.prefix["prefix"],
             site=self.prefix["location"],
             tenant=self.prefix["subscription"],
-            #tags=self.prefix["tags"],
+            # tags=self.prefix["tags"],
             custom_fields=self.prefix["custom_fields"])
 
         print(f"{colour}{map_values[code]}")
-        print(f"{Style.RESET_ALL}Prefix: {self.prefix['prefix']}")  
+        print(f"{Style.RESET_ALL}Prefix: {self.prefix['prefix']}")
         print(f"Subscription: {self.prefix['subscription']['name']}")
-        print(f"Resource Group: {self.prefix['custom_fields']['resource_group']}")
+        print(
+            f"Resource Group: {self.prefix['custom_fields']['resource_group']}")
         print(f"Virtual Network: {self.prefix['custom_fields']['vnet']}\n")
- 
+
     def remove_prefixes(self):
         """Removes prefixes in Netbox"""
 
@@ -110,10 +114,10 @@ class Netbox:
 
             print(f"{Fore.RED}Removed from Netbox:")
             print(f"{Style.RESET_ALL}Prefix: {item}")
-            print(f"Subscription: {item.tenant}")  
+            print(f"Subscription: {item.tenant}")
             print(f"Resource Group: {item.custom_fields['resource_group']}")
             print(f"Virtual Network: {item.custom_fields['vnet']}\n")
-                    
+
 
 if __name__ == "__main__":
     netbox = Netbox()

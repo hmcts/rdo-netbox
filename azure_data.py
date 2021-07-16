@@ -2,6 +2,7 @@
 import itertools
 import json
 import os
+import ipaddress
 
 from azure.identity import ClientSecretCredential
 from azure.mgmt.resource import SubscriptionClient, ResourceManagementClient
@@ -77,7 +78,7 @@ class AzureVnets:
                         res["resource_group"], nic).result().as_dict() for nic in res["nics"]
                 ]
                 propagated_prefs.append([
-                    {"prefix": j["address_prefix"][0],
+                    {"prefix": self.prefix_or_ip_supernet(j["address_prefix"][0]),
                      "location": {"name": "external"},
                      "subscription": {"name": rr["subscription_name"][:30]},
                      "custom_fields": {
@@ -88,9 +89,20 @@ class AzureVnets:
                     if j["state"] == "Active"
                     and j["next_hop_type"] == "VirtualNetworkGateway"
                     and j["address_prefix"] is not None
-                    and len(j["address_prefix"]) > 0]
+                    and len(j["address_prefix"]) > 0
+                    and self.is_private(j["address_prefix"][0])]
                 )
         self.propagated_prefixes = list(itertools.chain.from_iterable(propagated_prefs))
+
+    @staticmethod
+    def is_private(ip):
+        return ipaddress.ip_network(ip).is_private
+
+    @staticmethod
+    def prefix_or_ip_supernet(prefix):
+        if ipaddress.ip_network(prefix).num_addresses == 1:
+            return str(ipaddress.ip_network(prefix).supernet())
+        return prefix
 
     @property
     def prefixes(self):
@@ -109,3 +121,4 @@ if __name__ == "__main__":
     print("subscription[0]: {}".format(az_vnets.subscriptions[0]))
     print("prefix[0]: {}".format(az_vnets.prefixes[0]))
     print("prefix[-1]: {}".format(az_vnets.prefixes[-1]))
+    print(az_vnets.propagated_prefixes)

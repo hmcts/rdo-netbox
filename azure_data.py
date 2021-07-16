@@ -25,8 +25,9 @@ class AzureVnets:
     def _pull_subscriptions(self):
         sub_client = SubscriptionClient(self.credentials)
         self.azure_subs = [sub.as_dict() for sub in sub_client.subscriptions.list()]
-        self.subscriptions = [{"name": sub["display_name"]} for sub in self.azure_subs]
-        self.subscriptions.append({"name": "external"})
+        self.subscriptions = [
+            {"name": sub["display_name"], "description": sub["display_name"]} for sub in self.azure_subs]
+        self.subscriptions.append({"name": "external", "description": "external"})
 
     def _pull_resource_groups(self):
         for sub in self.subscriptions:
@@ -104,6 +105,7 @@ class AzureVnets:
 if __name__ == "__main__":
     az_vnets = AzureVnets()
     az_vnets.load_data()
-    print(len(az_vnets.prefixes))
-    print(az_vnets.prefixes[0])
-    print(az_vnets.prefixes[-1])
+    print("prefixes # {}".format(len(az_vnets.prefixes)))
+    print("subscription[0]: {}".format(az_vnets.subscriptions[0]))
+    print("prefix[0]: {}".format(az_vnets.prefixes[0]))
+    print("prefix[-1]: {}".format(az_vnets.prefixes[-1]))

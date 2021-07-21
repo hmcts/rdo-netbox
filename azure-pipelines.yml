@@ -23,14 +23,16 @@ stages:
   - template: pipeline-templates/deploy.yaml
     parameters:
       environment: 'stg'
+      tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
 
 ############################### PROD ############################### 
 
 - stage: netbox_prod
   displayName: Netbox Prod
   dependsOn: netbox_stg
-  condition: succeeded('netbox_stg')
+  condition: and(succeeded('netbox_stg'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   jobs:
   - template: pipeline-templates/deploy.yaml
     parameters:
       environment: 'prod'
+      tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'

@@ -1,0 +1,38 @@
+[
+  {
+    "subscription": "fb084706-583f-4c9a-bdab-949aac66ba5c",
+    "subscription_name": "HMCTS-HUB-NONPROD-INTSVC",
+    "resources": [
+      {
+        "resource_group": "hmcts-hub-nonprodi",
+        "nics": [
+          "hmcts-hub-nonprodi-nic-transit-public-0"
+        ]
+      },
+      {
+        "resource_group": "ukw-hub-nonprodi",
+        "nics": [
+          "ukw-hub-nonprodi-nic-transit-public-0"
+        ]
+      }
+    ]
+  },
+  {
+    "subscription": "0978315c-75fe-4ada-9d11-1eb5e0e0b214",
+    "subscription_name": "HMCTS-HUB-PROD-INTSVC",
+    "resources": [
+      {
+        "resource_group": "hmcts-hub-prod-int",
+        "nics": [
+          "hmcts-hub-prod-int-nic-transit-public-0"
+        ]
+      },
+      {
+        "resource_group": "ukw-hub-prod-int",
+        "nics": [
+          "ukw-hub-prod-int-nic-transit-public-0"
+        ]
+      }
+    ]
+  }
+]

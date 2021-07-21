@@ -30,7 +30,7 @@ stages:
 - stage: netbox_prod
   displayName: Netbox Prod
   dependsOn: netbox_stg
-  condition: and(succeeded('netbox_stg'), 'refs/heads/master')
+  condition: and(succeeded('netbox_stg'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   jobs:
   - template: pipeline-templates/deploy.yaml
     parameters:

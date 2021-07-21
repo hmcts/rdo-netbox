@@ -64,17 +64,14 @@ class Netbox:
             if not self.prefix["prefix"] in nb_prefixes:
                 Netbox.add_prefixes(self, "GREEN")
             else:
-                if len(self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])) > 1:
-                    for item in self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"]):
-                        if self.prefix["custom_fields"] == item.custom_fields:
-                            self.prefix["exists"] = True
-                    for item in self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"]):
-                        if not self.prefix.get('exists', False):
-                            Netbox.add_prefixes(self, "YELLOW")
-                else:
-                    if not self.prefix["custom_fields"] == self.nb.ipam.prefixes.get(
-                                                        prefix=self.prefix["prefix"]).custom_fields:
-                        Netbox.add_prefixes(self, "YELLOW")
+                prefix_space = self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])
+                found_pref = False
+                for pref in prefix_space:
+                    if self.prefix["custom_fields"] == pref.custom_fields:
+                        found_pref = True
+                        break
+                if not found_pref:
+                    Netbox.add_prefixes(self, "YELLOW")
 
     def add_prefixes(self, code):
         """Creates and updates prefixes in Netbox

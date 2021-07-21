@@ -20,7 +20,7 @@ class Netbox:
         self.url = GetSecret("netbox-url").secret_value
         self.token = GetSecret("netbox-token").secret_value
         self.nb = pynetbox.api(f"https://{self.url}", self.token)
-        # Disable SSL Vertification
+        # Disable SSL Verification
         session = requests.Session()
         session.verify = False
         self.nb.http_session = session
@@ -59,8 +59,9 @@ class Netbox:
         """Checks if prefixes need to be added or
         removed from Netbox
         Data is pulled in from Azure"""
+        nb_prefixes = [p.prefix for p in self.nb.ipam.prefixes.all() if p is not None]
         for self.prefix in self.az_data.prefixes:
-            if not self.prefix["prefix"] in str(self.nb.ipam.prefixes.all()):
+            if not self.prefix["prefix"] in nb_prefixes:
                 Netbox.add_prefixes(self, "GREEN")
             else:
                 if len(self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])) > 1:

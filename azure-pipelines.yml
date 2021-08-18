@@ -15,22 +15,34 @@ stages:
 
 ############################### STAGING ############################### 
 
-- stage: netbox_stg
-  displayName: Netbox Staging
+# - stage: netbox_stg
+#   displayName: Netbox Staging
+#   dependsOn: init
+#   condition: succeeded('init')
+#   jobs:
+#   - template: pipeline-templates/deploy.yaml
+#     parameters:
+#       environment: 'stg'
+#       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
+
+############################### PTLSBOX ############################### 
+
+- stage: netbox_ptlsbox
+  displayName: Netbox PTLSBOX
   dependsOn: init
   condition: succeeded('init')
   jobs:
   - template: pipeline-templates/deploy.yaml
     parameters:
-      environment: 'stg'
+      environment: 'ptlsbox'
       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
 
 ############################### PROD ############################### 
 
 - stage: netbox_prod
   displayName: Netbox Prod
-  dependsOn: netbox_stg
-  condition: and(succeeded('netbox_stg'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+  dependsOn: netbox_ptlsbox
+  condition: and(succeeded('netbox_ptlsbox'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
   jobs:
   - template: pipeline-templates/deploy.yaml
     parameters:

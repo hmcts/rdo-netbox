@@ -66,8 +66,8 @@ class Netbox:
             else:
                 prefix_space = self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])
                 found_pref = False
+                print(self.prefix["custom_fields"])
                 for pref in prefix_space:
-                    print(self.prefix["custom_fields"])
                     if self.prefix["custom_fields"] == pref.custom_fields:
                         found_pref = True
                         break
@@ -90,6 +90,8 @@ class Netbox:
             tenant=self.prefix["subscription"],
             # tags=self.prefix["tags"],
             custom_fields=self.prefix["custom_fields"])
+
+        print(self.prefix["custom_fields"])
 
         print(f"{colour}{map_values[code]}")
         print(f"{Style.RESET_ALL}Prefix: {self.prefix['prefix']}")

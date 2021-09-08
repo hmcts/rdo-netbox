@@ -67,6 +67,7 @@ class Netbox:
                 prefix_space = self.nb.ipam.prefixes.filter(prefix=self.prefix["prefix"])
                 found_pref = False
                 for pref in prefix_space:
+                    print(self.prefix["custom_fields"])
                     if self.prefix["custom_fields"] == pref.custom_fields:
                         found_pref = True
                         break

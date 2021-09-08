@@ -1,18 +1,18 @@
 jobs:
   - job: Init
     pool:
-        name: ${{ parameters.agentPool }}
-        vmImage: Ubuntu-18.04
+      name: hmcts-sds-ptlsbox
+      vmImage: Ubuntu-18.04
 
     steps:
-    - task: CopyFiles@1
-      displayName: Copy files
-      inputs:
-        contents: '**'
-        TargetFolder: $(Build.ArtifactStagingDirectory)
-        cleanTargetFolder: true
+      - task: CopyFiles@1
+        displayName: Copy files
+        inputs:
+          contents: "**"
+          TargetFolder: $(Build.ArtifactStagingDirectory)
+          cleanTargetFolder: true
 
-    - task: PublishPipelineArtifact@1
-      inputs:
-        artifactName: 'drop'
-        targetPath: '$(Build.ArtifactStagingDirectory)'
+      - task: PublishPipelineArtifact@1
+        inputs:
+          artifactName: "drop"
+          targetPath: "$(Build.ArtifactStagingDirectory)"

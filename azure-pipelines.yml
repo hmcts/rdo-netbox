@@ -36,6 +36,7 @@ stages:
     parameters:
       environment: 'ptlsbox'
       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
+      agentPool: 'hmcts-sds-ptlsbox'
 
 ############################### PROD ############################### 
 
@@ -48,3 +49,4 @@ stages:
     parameters:
       environment: 'prod'
       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
+      agentPool: 'hmcts-sds-ptl'

@@ -28,7 +28,7 @@ stages:
 
   - stage: netbox_ptlsbox
     displayName: Netbox PTLSBOX
-    dependsOn: init
+    dependsOn: init_ptlsbox
     condition: succeeded('init')
     jobs:
       - template: pipeline-templates/deploy.yaml
@@ -49,7 +49,7 @@ stages:
 
   - stage: netbox_prod
     displayName: Netbox Prod
-    dependsOn: netbox_ptlsbox
+    dependsOn: init_ptl
     condition: and(succeeded('netbox_ptlsbox'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
     jobs:
       - template: pipeline-templates/deploy.yaml

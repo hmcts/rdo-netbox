@@ -26,10 +26,10 @@ stages:
         parameters:
           agentPool: "hmcts-sds-ptlsbox"
 
-  - stage: netbox_ptlsbox
-    displayName: Netbox PTLSBOX
+  - stage: netbox_sbox
+    displayName: Netbox Sbox
     dependsOn: init_ptlsbox
-    condition: succeeded('init')
+    condition: succeeded('init_ptlsbox')
     jobs:
       - template: pipeline-templates/deploy.yaml
         parameters:

@@ -19,7 +19,7 @@ stages:
 
   ############################### PTLSBOX ###############################
 
-  - stage: init
+  - stage: init_ptlsbox
     displayName: Init
     jobs:
       - template: pipeline-templates/copy_files.yaml
@@ -39,8 +39,9 @@ stages:
 
   ############################### PROD ###############################
 
-  - stage: init
+  - stage: init_ptl
     displayName: Init
+    dependsOn: netbox_ptlsbox
     jobs:
       - template: pipeline-templates/copy_files.yaml
         parameters:

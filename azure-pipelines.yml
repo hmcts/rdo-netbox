@@ -20,7 +20,7 @@ stages:
   ############################### PTLSBOX ###############################
 
   - stage: init_ptlsbox
-    displayName: Init
+    displayName: Init Sbox
     jobs:
       - template: pipeline-templates/copy_files.yaml
         parameters:
@@ -35,12 +35,12 @@ stages:
         parameters:
           environment: "ptlsbox"
           tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
-          agentPool: "hmcts-sds-ptl"
+          agentPool: "hmcts-sds-ptlsbox"
 
   ############################### PROD ###############################
 
   - stage: init_ptl
-    displayName: Init
+    displayName: Init Prod
     dependsOn: netbox_sbox
     jobs:
       - template: pipeline-templates/copy_files.yaml

@@ -1,52 +1,58 @@
 trigger:
-- master
+  - master
 
 pr:
-- master
+  - master
 
 stages:
+  ############################### STAGING ###############################
 
-############################### INIT ############################### 
+  # - stage: netbox_stg
+  #   displayName: Netbox Staging
+  #   dependsOn: init
+  #   condition: succeeded('init')
+  #   jobs:
+  #   - template: pipeline-templates/deploy.yaml
+  #     parameters:
+  #       environment: 'stg'
+  #       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
 
-- stage: init
-  displayName: Init
-  jobs:
-  - template: pipeline-templates/copy_files.yaml
+  ############################### PTLSBOX ###############################
 
-############################### STAGING ############################### 
+  - stage: init
+    displayName: Init
+    jobs:
+      - template: pipeline-templates/copy_files.yaml
+        parameters:
+          agentPool: "hmcts-sds-ptlsbox"
 
-# - stage: netbox_stg
-#   displayName: Netbox Staging
-#   dependsOn: init
-#   condition: succeeded('init')
-#   jobs:
-#   - template: pipeline-templates/deploy.yaml
-#     parameters:
-#       environment: 'stg'
-#       tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
+  - stage: netbox_ptlsbox
+    displayName: Netbox PTLSBOX
+    dependsOn: init
+    condition: succeeded('init')
+    jobs:
+      - template: pipeline-templates/deploy.yaml
+        parameters:
+          environment: "ptlsbox"
+          tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+          agentPool: "hmcts-sds-ptl"
 
-############################### PTLSBOX ############################### 
+  ############################### PROD ###############################
 
-- stage: netbox_ptlsbox
-  displayName: Netbox PTLSBOX
-  dependsOn: init
-  condition: succeeded('init')
-  jobs:
-  - template: pipeline-templates/deploy.yaml
-    parameters:
-      environment: 'ptlsbox'
-      tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
-      agentPool: 'hmcts-sds-ptlsbox'
+  - stage: init
+    displayName: Init
+    jobs:
+      - template: pipeline-templates/copy_files.yaml
+        parameters:
+          agentPool: "hmcts-sds-ptlsbox"
 
-############################### PROD ############################### 
-
-- stage: netbox_prod
-  displayName: Netbox Prod
-  dependsOn: netbox_ptlsbox
-  condition: and(succeeded('netbox_ptlsbox'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
-  jobs:
-  - template: pipeline-templates/deploy.yaml
-    parameters:
-      environment: 'prod'
-      tenantId: '531ff96d-0ae9-462a-8d2d-bec7c0b42082'
-      agentPool: 'hmcts-sds-ptl'
+  - stage: netbox_prod
+    displayName: Netbox Prod
+    dependsOn: netbox_ptlsbox
+    condition: and(succeeded('netbox_ptlsbox'), eq(variables['build.sourceBranch'], 'refs/heads/master'))
+    jobs:
+      - template: pipeline-templates/deploy.yaml
+        parameters:
+          environment: "prod"
+          tenantId: "531ff96d-0ae9-462a-8d2d-bec7c0b42082"
+          agentPool: "hmcts-sds-ptl"

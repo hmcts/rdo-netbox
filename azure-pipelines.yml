@@ -45,7 +45,7 @@ stages:
     jobs:
       - template: pipeline-templates/copy_files.yaml
         parameters:
-          agentPool: "hmcts-sds-ptlsbox"
+          agentPool: "hmcts-sds-ptl"
 
   - stage: netbox_prod
     displayName: Netbox Prod

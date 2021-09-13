@@ -1,7 +1,7 @@
 jobs:
   - job: Populate_Netbox
     pool:
-      name: hmcts-cftptl-agent-pool
+      name: ${{ parameters.agentPool }}
       vmImage: Ubuntu-18.04
 
     steps:

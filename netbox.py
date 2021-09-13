@@ -93,8 +93,7 @@ class Netbox:
         print(f"{colour}{map_values[code]}")
         print(f"{Style.RESET_ALL}Prefix: {self.prefix['prefix']}")
         print(f"Subscription: {self.prefix['subscription']['name']}")
-        print(
-            f"Resource Group: {self.prefix['custom_fields']['resource_group']}")
+        print(f"Resource Group: {self.prefix['custom_fields']['resource_group']}")
         print(f"Virtual Network: {self.prefix['custom_fields']['vnet']}\n")
 
     def remove_prefixes(self):

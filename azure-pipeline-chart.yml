@@ -30,7 +30,7 @@ jobs:
       serviceConnection: "DCD-CFTAPPS-SBOX"
       aksResourceGroup: "cft-sbox-00-rg"
       aksCluster: "cft-sbox-00-aks"
-      chartPath: "/charts"
+      chartPath: "/charts/"
 
 - job: Release
   # Make sure we have a tag to run this job
@@ -52,4 +52,4 @@ jobs:
       aksResourceGroup: "cft-sbox-00-rg"
       aksCluster: "cft-sbox-00-aks"
       acrName: "sdshmctspublic"
-      chartPath: "/charts"
+      chartPath: "/charts/"

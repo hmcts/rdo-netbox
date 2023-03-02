@@ -12,7 +12,7 @@ resources:
   - repository: cnp-library
     type: github
     name: hmcts/cnp-azuredevops-libraries
-    endpoint: 'hmcts'
+    endpoint: 'hmcts (1)'
 
 jobs:
 - job: Validate

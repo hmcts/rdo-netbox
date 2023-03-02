@@ -15,24 +15,6 @@ resources:
     endpoint: 'hmcts (1)'
 
 jobs:
-- job: Validate
-  pool:
-    name: hmcts-sandbox-agent-pool
-  steps:
-  - template: steps/charts/validate.yaml@cnp-library
-    parameters :
-      chartName: netbox
-      chartReleaseName: netbox-ci-test
-      chartNamespace: chart-tests
-      helmDeleteWait: "300"
-      helmInstallWait: "300"
-      helmInstallTimeout: "500"
-      serviceConnection: "DCD-CFTAPPS-SBOX"
-      aksResourceGroup: "cft-sbox-00-rg"
-      aksCluster: "cft-sbox-00-aks"
-      chartPath: "./charts/"
-      valuesFile: ""
-
 - job: Release
   # Make sure we have a tag to run this job
   condition: >

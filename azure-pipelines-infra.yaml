@@ -71,7 +71,7 @@ stages:
               keyvaultSecret: 'azure-devops-token'
               serviceConnection: 'DCD-CFTAPPS-STG'
               overrideAction: ${{ parameters.action }}
-  - ${{ each parameter in parameters.environment }}:
+  - ${{ each parameter in parameters.components }}:
     - stage: ${{ parameter.deployment }}-${{ parameter.environment }}
       displayName: ${{ parameter.deployment }}-${{ parameter.environment }} 
       jobs:

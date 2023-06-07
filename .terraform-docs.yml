@@ -1,0 +1,13 @@
+# https://terraform-docs.io/user-guide/configuration/
+
+settings:
+  hide-empty: true
+
+formatter: "md"
+
+output:
+  file: README.md
+  template: |-
+    <!-- BEGIN_TF_DOCS -->
+    {{ .Content }}
+    <!-- END_TF_DOCS -->

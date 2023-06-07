@@ -1,0 +1,95 @@
+name: "${{ parameters.action }} - ${{ parameters.location }} - netbox infrastructure"
+trigger:
+  batch: true
+  branches:
+    include:
+      - master
+pr:
+  branches:
+    include:
+      - master
+
+resources:
+  repositories:
+  - repository: cnp-azuredevops-libraries
+    type: github
+    ref: refs/heads/master
+    name: hmcts/cnp-azuredevops-libraries
+    endpoint: 'hmcts'
+parameters:
+  - name: action
+    displayName: Action
+    type: string
+    default: 'plan'
+    values:
+      - plan
+      - apply
+
+  - name: location
+    displayName: Location
+    type: string
+    default: "UK South"
+    values:
+      - "UK South"
+      - "UK West"
+
+  - name: components
+    displayName: Component to Run
+    type: object
+    default:
+      - deployment: "netbox"
+        environment: 'ptlsbox'
+        dependsOn: "Precheck"
+        
+      - deployment: "netbox"
+        environment: "ptl"
+        dependsOn: "Precheck"
+
+variables:
+  - name: project
+    value: netbox 
+  - name: agentPool
+    value: 'ubuntu-latest'
+  - name: build
+    value: $(Build.BuildNumber)
+  - name: product
+    value: "sds-platform"
+  - name: tfInitSub
+    value: "04d27a32-7a07-48b3-95b8-3c8691e1a263"
+  - template: vars/input-variables.yaml@cnp-azuredevops-libraries
+
+late: vars/input-variables.yaml@cnp-azuredevops-libraries
+
+stages:
+  - stage: Precheck
+    jobs:
+      - job: Validate
+        pool:
+          vmImage: ${{ variables.agentPool }}
+        steps:
+          - template: steps/terraform-precheck.yaml@cnp-azuredevops-libraries
+            parameters:
+              keyvaultName: 'infra-vault-nonprod'
+              keyvaultSecret: 'azure-devops-token'
+              serviceConnection: 'DCD-CFTAPPS-STG'
+              overrideAction: ${{ parameters.action }}
+  - ${{ each parameter in parameters.environment }}:
+    - stage: ${{ parameter.deployment }}-${{ parameter.environment }}
+      displayName: ${{ parameter.deployment }}-${{ parameter.environment }} 
+      jobs:
+        - job: TerraformPlanApply
+          pool:
+            vmImage: ${{ variables.agentPool }}
+          steps:
+            - template: steps/terraform.yaml@cnp-azuredevops-libraries
+              parameters:
+                overrideAction: ${{ parameters.action }}
+                environment: ${{ parameter.environment }}
+                location: ${{ parameters.location }}
+                component: ${{ parameter.deployment }}
+                serviceConnection: "OPS-APPROVAL-GATE-${{ upper(parameter.environment) }}-ENVS"
+                product: $(product)
+                terraformInitSubscription: ${{ variables.tfInitSub }}
+                planCommandOptions: >
+                  -var environment=${{ parameter.environment }}
+                  -var project=$(project)

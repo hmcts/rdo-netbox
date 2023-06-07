@@ -72,8 +72,8 @@ stages:
               serviceConnection: 'DCD-CFTAPPS-STG'
               overrideAction: ${{ parameters.action }}
   - ${{ each parameter in parameters.components }}:
-    - stage: ${{ parameter.deployment }}-${{ parameter.environment }}
-      displayName: ${{ parameter.deployment }}-${{ parameter.environment }} 
+    - stage: ${{ parameter.deployment }}_${{ parameter.environment }}
+      displayName: ${{ parameter.deployment }}_${{ parameter.environment }} 
       jobs:
         - job: TerraformPlanApply
           pool:

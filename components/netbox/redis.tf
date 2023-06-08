@@ -9,6 +9,6 @@ module "redis" {
   family        = "C"
   sku_name      = "Basic"
 
-  private_endpoint_enabled      = false
+  private_endpoint_enabled      = true
   public_network_access_enabled = false
 }

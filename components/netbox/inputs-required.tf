@@ -33,10 +33,6 @@ variable "component" {
   description = "Name of the component"
 }
 
-variable "jenkins_AAD_objectId" {
-  type = string
-
-}
 variable "builtFrom" {
   type        = string
   description = "Name of the github repo source"

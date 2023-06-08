@@ -7,7 +7,7 @@ module "redis" {
   redis_version = "6"
   business_area = "sds"
   family        = "C"
-  sku_name      = "Basic"
+  sku_name      = "Standard"
 
   private_endpoint_enabled      = true
   public_network_access_enabled = false

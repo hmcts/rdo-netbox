@@ -27,3 +27,13 @@ variable "location" {
   default     = "UK South"
   description = "Azure Region"
 }
+variable "component" {
+  type        = string
+  default     = "netbox"
+  description = "Name of the component"
+}
+
+ variable "jenkins_AAD_objectId" {
+  type        = string
+  
+ }

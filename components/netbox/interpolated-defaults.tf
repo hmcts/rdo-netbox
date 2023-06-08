@@ -6,5 +6,5 @@ module "tags" {
   source      = "github.com/hmcts/terraform-module-common-tags?ref=master"
   builtFrom   = var.builtFrom
   environment = var.environment
-  product     = "sds-platform"
+  product     = var.product
 }

@@ -12,7 +12,7 @@ module "postgresql_flexible" {
   location      = var.location
 
   common_tags          = module.tags.common_tags
-  admin_user_object_id = azurerm_client_config.current.object_id
+  admin_user_object_id = data.azurerm_client_config.current.object_id
   pgsql_databases = [
     {
       name : "netbox"

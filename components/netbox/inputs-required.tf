@@ -11,10 +11,10 @@ variable "product" {
   description = "Name of the product"
 }
 
-variable "subscription_id" {
+/* variable "subscription_id" {
   type        = string
   description = "subscription ID"
-}
+} */
 variable "aks_subscription_id" {
   type        = string
   description = "subscription ID"

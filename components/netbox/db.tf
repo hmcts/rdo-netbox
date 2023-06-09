@@ -22,26 +22,26 @@ module "postgresql_flexible" {
   pgsql_version = "14"
 }
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
-  name         = "netbox-POSTGRES-USER"
+  name         = "netbox-POSTGRES-USER-v14"
   value        = module.postgresql_flexible.username
   key_vault_id = azurerm_key_vault.netbox_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
-  name         = "netbox-POSTGRES-PASS"
+  name         = "netbox-POSTGRES-PASS-v14"
   value        = module.postgresql_flexible.password
   key_vault_id = azurerm_key_vault.netbox_key_vault.id
 }
 
-resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
-  name         = "netbox-POSTGRES-HOST"
+resource "azurerm_key_vault_secret" "POSTGRES-HOST" {
+  name         = "netbox-POSTGRES-HOST-v14"
   value        = module.postgresql_flexible.fqdn
   key_vault_id = azurerm_key_vault.netbox_key_vault.id
 }
 
 
-resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
-  name         = "netbox-POSTGRES-DATABASE"
+resource "azurerm_key_vault_secret" "POSTGRES-DATABASE" {
+  name         = "netbox-POSTGRES-DATABASE-v14"
   value        = "netbox"
   key_vault_id = azurerm_key_vault.netbox_key_vault.id
 }

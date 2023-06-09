@@ -1,5 +1,5 @@
 module "redis" {
-  source        = "git::https://github.com/hmcts/cnp-module-redis?ref=add-redis-version-flag-disable-backup"
+  source        = "git::https://github.com/hmcts/cnp-module-redis?ref=add-redis-version-flag"
   product       = var.product
   location      = var.location
   env           = var.environment

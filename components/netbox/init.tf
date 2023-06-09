@@ -5,8 +5,10 @@ terraform {
   }
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.59.0"
+      source = "hashicorp/azurerm"
+      # version pinned to 3.53.0 b/c of issue https://github.com/hashicorp/terraform-provider-azurerm/issues/21967
+      version = "3.53.0"
+
     }
   }
 }

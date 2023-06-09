@@ -3,16 +3,16 @@ module "postgresql_flexible" {
     azurerm.postgres_network = azurerm.postgres_network
   }
 
-  source        = "git::https://github.com/hmcts/terraform-module-postgresql-flexible?ref=master"
-  env           = var.environment
-  product       = var.product
-  name          = "${var.product}-v14-flexible"
-  component     = var.component
-  business_area = "sds"
-  location      = var.location
-
-  common_tags          = module.tags.common_tags
-  admin_user_object_id = data.azurerm_client_config.current.object_id
+  source                        = "git::https://github.com/hmcts/terraform-module-postgresql-flexible?ref=master"
+  env                           = var.environment
+  product                       = var.product
+  name                          = "${var.product}-v14-flexible"
+  component                     = var.component
+  business_area                 = "sds"
+  location                      = var.location
+  enable_read_only_group_access = false
+  common_tags                   = module.tags.common_tags
+  admin_user_object_id          = data.azurerm_client_config.current.object_id
   pgsql_databases = [
     {
       name : "netbox"

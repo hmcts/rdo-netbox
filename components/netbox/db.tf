@@ -5,6 +5,7 @@ module "postgresql_flexible" {
 
   source                        = "git::https://github.com/hmcts/terraform-module-postgresql-flexible?ref=master"
   env                           = var.environment
+  resource_group_name           = azurerm_resource_group.netbox_rg.name
   product                       = var.product
   name                          = "${var.product}-v14-flexible"
   component                     = var.component

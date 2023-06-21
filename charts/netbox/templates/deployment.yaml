@@ -44,7 +44,7 @@ spec:
                   - "-c"
                   - >
                     apt update;
-                    apt install postgresql-dev gcc python3-dev musl-dev zlib-dev jpeg-dev build-base -y;
+                    apt install postgresql gcc python3-dev musl-dev zlib1g-dev libjpeg-dev build-essential -y;
                     pip install psycopg2-binary;
                     pip install -r /opt/netbox/requirements.txt;
                     /opt/netbox/upgrade.sh;

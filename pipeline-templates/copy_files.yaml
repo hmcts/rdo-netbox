@@ -2,7 +2,7 @@ jobs:
   - job: Init
     pool:
       name: ${{ parameters.agentPool }}
-      vmImage: Ubuntu-18.04
+      vmImage: ubuntu-latest
 
     steps:
       - task: CopyFiles@1

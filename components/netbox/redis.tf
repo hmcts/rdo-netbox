@@ -1,5 +1,5 @@
 module "redis" {
-  source              = "git::https://github.com/hmcts/cnp-module-redis?ref=add-redis-version-flag"
+  source              = "git::https://github.com/hmcts/cnp-module-redis?ref=master"
   product             = var.product
   location            = var.location
   resource_group_name = azurerm_resource_group.netbox_rg.name

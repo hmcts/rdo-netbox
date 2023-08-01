@@ -8,12 +8,6 @@
         "nics": [
           "hmcts-hub-nonprodi-nic-transit-public-0"
         ]
-      },
-      {
-        "resource_group": "ukw-hub-nonprodi",
-        "nics": [
-          "ukw-hub-nonprodi-nic-transit-public-0"
-        ]
       }
     ]
   },
@@ -25,12 +19,6 @@
         "resource_group": "hmcts-hub-prod-int",
         "nics": [
           "hmcts-hub-prod-int-nic-transit-public-0"
-        ]
-      },
-      {
-        "resource_group": "ukw-hub-prod-int",
-        "nics": [
-          "ukw-hub-prod-int-nic-transit-public-0"
         ]
       }
     ]

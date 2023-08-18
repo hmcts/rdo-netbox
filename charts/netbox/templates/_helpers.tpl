@@ -67,3 +67,81 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{/*
+Name of the Secret that contains the PostgreSQL password
+*/}}
+{{- define "netbox.postgresql.secret" -}}
+  {{- if .Values.postgresql.enabled }}
+    {{- include "postgresql.secretName" .Subcharts.postgresql -}}
+  {{- else if .Values.externalDatabase.existingSecretName }}
+    {{- .Values.externalDatabase.existingSecretName }}
+  {{- else }}
+    {{- .Values.existingSecret | default (include "netbox.fullname" .) }}
+  {{- end }}
+{{- end }}
+
+{{/*
+Name of the key in Secret that contains the PostgreSQL password
+*/}}
+{{- define "netbox.postgresql.secretKey" -}}
+  {{- if .Values.postgresql.enabled -}}
+    {{- include "postgresql.userPasswordKey" .Subcharts.postgresql -}}
+  {{- else if .Values.externalDatabase.existingSecretName -}}
+    {{- .Values.externalDatabase.existingSecretKey -}}
+  {{- else -}}
+    db_password
+  {{- end -}}
+{{- end }}
+
+{{/*
+Name of the Secret that contains the Redis tasks password
+*/}}
+{{- define "netbox.webhooksRedis.secret" -}}
+  {{- if .Values.redis.enabled }}
+    {{- include "redis.secretName" .Subcharts.redis -}}
+  {{- else if .Values.webhooksRedis.existingSecretName }}
+    {{- .Values.webhooksRedis.existingSecretName }}
+  {{- else }}
+    {{- .Values.existingSecret | default (include "netbox.fullname" .) }}
+  {{- end }}
+{{- end }}
+
+{{/*
+Name of the key in Secret that contains the Redis tasks password
+*/}}
+{{- define "netbox.webhooksRedis.secretKey" -}}
+  {{- if .Values.redis.enabled -}}
+    {{- include "redis.secretPasswordKey" .Subcharts.redis -}}
+  {{- else if .Values.webhooksRedis.existingSecretName -}}
+    {{ .Values.webhooksRedis.existingSecretKey }}
+  {{- else -}}
+    redis_webhooks_password
+  {{- end -}}
+{{- end }}
+
+{{/*
+Name of the Secret that contains the Redis cache password
+*/}}
+{{- define "netbox.cachingRedis.secret" -}}
+  {{- if .Values.redis.enabled }}
+    {{- include "redis.secretName" .Subcharts.redis -}}
+  {{- else if .Values.cachingRedis.existingSecretName }}
+    {{- .Values.cachingRedis.existingSecretName }}
+  {{- else }}
+    {{- .Values.existingSecret | default (include "netbox.fullname" .) }}
+  {{- end }}
+{{- end }}
+
+{{/*
+Name of the key in Secret that contains the Redis cache password
+*/}}
+{{- define "netbox.cachingRedis.secretKey" -}}
+  {{- if .Values.redis.enabled -}}
+    {{- include "redis.secretPasswordKey" .Subcharts.redis -}}
+  {{- else if .Values.cachingRedis.existingSecretName -}}
+    {{ .Values.cachingRedis.existingSecretKey }}
+  {{- else -}}
+    redis_cache_password
+  {{- end -}}
+{{- end }}

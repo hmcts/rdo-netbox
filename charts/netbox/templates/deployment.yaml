@@ -81,6 +81,27 @@ spec:
             {{- end }}
             - name: static
               mountPath: /opt/netbox/netbox/static
+            {{- if or .Values.postgresql.enabled .Values.externalDatabase.existingSecretName }}
+            - name: db-secret
+              mountPath: /run/secrets/database
+              readOnly: true
+            {{- end }}
+            {{- if .Values.redis.enabled }}
+            - name: redis-secret
+              mountPath: /run/secrets/redis
+              readOnly: true
+            {{- else }}
+            {{- if .Values.webhooksRedis.existingSecretName }}
+            - name: redis-webhooks-secret
+              mountPath: /run/secrets/redis_webhooks
+              readOnly: true
+            {{- end }}
+            {{- if .Values.cachingRedis.existingSecretName }}
+            - name: redis-caching-secret
+              mountPath: /run/secrets/redis_caching
+              readOnly: true
+            {{- end }}
+            {{- end }}
             - name: secrets
               mountPath: /run/secrets/superuser_password
               subPath: superuser_password
@@ -132,42 +153,12 @@ spec:
           configMap:
             name: {{ include "netbox.fullname" . }}
         - name: secrets
-          projected:
-            sources:
-              - secret:
-                  name: {{ .Values.existingSecret | default (include "netbox.fullname" .) | quote }}
-                  items:
-                    # Used by netbox-docker entry scripts
-                    - key: superuser_password
-                      path: superuser_password
-                    - key: superuser_api_token
-                      path: superuser_api_token
-                    # Used by our configuration
-                    - key: email_password
-                      path: email_password
-                    - key: napalm_password
-                      path: napalm_password
-                    - key: secret_key
-                      path: secret_key
-                    {{- if eq .Values.remoteAuth.backend "netbox.authentication.LDAPBackend" }}
-                    - key: ldap_bind_password
-                      path: ldap_bind_password
-                    {{- end }}
-              - secret:
-                  name: {{ include "netbox.postgresql.secret" . | quote }}
-                  items:
-                    - key: {{ include "netbox.postgresql.secretKey" . | quote }}
-                      path: db_password
-              - secret:
-                  name: {{ include "netbox.webhooksRedis.secret" . | quote }}
-                  items:
-                    - key: {{ include "netbox.webhooksRedis.secretKey" . | quote }}
-                      path: redis_webhooks_password
-              - secret:
-                  name: {{ include "netbox.cachingRedis.secret" . | quote }}
-                  items:
-                    - key: {{ include "netbox.cachingRedis.secretKey" . | quote }}
-                      path: redis_cache_password
+          secret:
+            {{- if .Values.existingSecret }}
+            secretName: {{ .Values.existingSecret | quote }}
+            {{- else }}
+            secretName: {{ include "netbox.fullname" . }}
+            {{- end }}
         - name: media
         {{- if .Values.persistence.enabled }}
           persistentVolumeClaim:
@@ -182,6 +173,31 @@ spec:
         {{- end }}
         - name: static
           emptyDir: {}
+        {{- if or .Values.postgresql.enabled .Values.externalDatabase.existingSecretName }}
+        - name: db-secret
+          secret:
+            {{- if .Values.postgresql.enabled }}
+            secretName: {{ include "netbox.postgresql.fullname" . | quote }}
+            {{- else }}
+            secretName: {{ .Values.externalDatabase.existingSecretName | quote }}
+            {{- end }}
+        {{- end }}
+        {{- if .Values.redis.enabled }}
+        - name: redis-secret
+          secret:
+            secretName: {{ include "netbox.redis.fullname" . | quote }}
+        {{- else }}
+        {{- if .Values.webhooksRedis.existingSecretName }}
+        - name: redis-webhooks-secret
+          secret:
+            secretName: {{ .Values.webhooksRedis.existingSecretName | quote }}
+        {{- end }}
+        {{- if .Values.cachingRedis.existingSecretName }}
+        - name: redis-caching-secret
+          secret:
+            secretName: {{ .Values.cachingRedis.existingSecretName | quote }}
+        {{- end }}
+        {{- end }}
         {{- with .Values.extraVolumes }}
         {{ toYaml . | indent 8 | trim }}
         {{- end }}

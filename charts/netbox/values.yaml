@@ -205,7 +205,7 @@ externalDatabase:
   database: netbox
   username: netbox@netbox-ptlsbox-netboxazure
   password: ""
-  existingSecretName: netbox-postgresql
+  existingSecretName: ""
   existingSecretKey: postgresql-password
   sslMode: prefer
   connMaxAge: 300
@@ -229,7 +229,7 @@ webhooksRedis:
   #  - mysentinel:26379
   #sentinelService: netbox-redis
   password: ""
-  existingSecretName: netbox-redis
+  existingSecretName: ""
   existingSecretKey: redis-password
 
 cachingRedis:
@@ -245,7 +245,7 @@ cachingRedis:
   #  - mysentinel:26379
   #sentinelService: netbox-redis
   password: ""
-  existingSecretName: netbox-redis
+  existingSecretName: ""
   existingSecretKey: redis-password
 
 imagePullSecrets: []

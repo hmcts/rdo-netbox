@@ -22,10 +22,37 @@ data:
 
     _load_yaml()
 
-    DATABASE['PASSWORD'] = _load_secret('netbox', 'db_password')
+    DATABASE['PASSWORD'] = _load_secret(
+      {{- if .Values.postgresql.enabled -}}
+      'database', 'postgresql-password'
+      {{- else -}}
+      {{- if .Values.externalDatabase.existingSecretName -}}
+      'database', {{ .Values.externalDatabase.existingSecretKey | squote }}
+      {{- else -}}
+      'netbox', 'db_password'
+      {{- end -}}
+      {{- end -}})
     NAPALM_PASSWORD = _load_secret('netbox', 'napalm_password')
-    REDIS['tasks']['PASSWORD'] = _load_secret('netbox', 'redis_webhooks_password')
-    REDIS['caching']['PASSWORD'] = _load_secret('netbox', 'redis_cache_password')
+    REDIS['tasks']['PASSWORD'] = _load_secret(
+      {{- if .Values.redis.enabled -}}
+      'redis', 'redis-password'
+      {{- else -}}
+      {{- if .Values.webhooksRedis.existingSecretName -}}
+      'redis_webhooks', {{ .Values.webhooksRedis.existingSecretKey | squote }}
+      {{- else -}}
+      'netbox', 'redis_password'
+      {{- end -}}
+      {{- end -}})
+    REDIS['caching']['PASSWORD'] = _load_secret(
+      {{- if .Values.redis.enabled -}}
+      'redis', 'redis-password'
+      {{- else -}}
+      {{- if .Values.cachingRedis.existingSecretName -}}
+      'redis_caching', {{ .Values.cachingRedis.existingSecretKey | squote }}
+      {{- else -}}
+      'netbox', 'redis_cache_password'
+      {{- end -}}
+      {{- end -}})
     SECRET_KEY = _load_secret('netbox', 'secret_key')
 
     # Post-process certain values
@@ -114,6 +141,7 @@ data:
         HOST: {{ .Values.webhooksRedis.host | quote }}
         PORT: {{ .Values.webhooksRedis.port | int}}
         {{- end }}
+        USERNAME: {{ .Values.webhooksRedis.username | quote }}
         DATABASE: {{ int .Values.webhooksRedis.database }}
         DEFAULT_TIMEOUT: {{ int .Values.webhooksRedis.timeout }}
         SSL: {{ toJson .Values.webhooksRedis.ssl }}
@@ -128,6 +156,7 @@ data:
         HOST: {{ .Values.cachingRedis.host | quote }}
         PORT: {{ .Values.cachingRedis.port | int}}
         {{- end }}
+        USERNAME: {{ .Values.cachingRedis.username | quote }}
         DATABASE: {{ int .Values.cachingRedis.database }}
         DEFAULT_TIMEOUT: {{ int .Values.cachingRedis.timeout }}
         SSL: {{ toJson .Values.cachingRedis.ssl }}

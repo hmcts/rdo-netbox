@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: netboxcommunity/netbox
-  tag: v2.11.12
+  tag: v3.5.8
   pullPolicy: IfNotPresent
 
 superuser:
@@ -200,14 +200,14 @@ postgresql:
 ## External database settings
 # These are used if postgresql.enabled is false, and are ignored otherwise
 externalDatabase:
-  host: netbox-ptlsbox-netboxazure.privatelink.postgres.database.azure.com
+  host: netbox-v14-flexible-ptlsbox.postgres.database.azure.com
   port: 5432
   database: netbox
-  username: netbox@netbox-ptlsbox-netboxazure
+  username: pgadmin
   password: ""
   existingSecretName: netbox-postgresql
   existingSecretKey: postgresql-password
-  sslMode: prefer
+  sslMode: require
   connMaxAge: 300
 
 redis:
@@ -219,12 +219,12 @@ redis:
 webhooksRedis:
   database: 0
   timeout: 300
-  ssl: false
+  ssl: true
 
   # Used only when redis.enabled is false. host and port are not used if
   # sentinels are given.
-  host: netbox-ptlsbox-netboxazure-standard.redis.cache.windows.net
-  port: 6379
+  host: netbox-ptlsbox.redis.cache.windows.net
+  port: 6380
   sentinels: []
   #  - mysentinel:26379
   #sentinelService: netbox-redis
@@ -235,12 +235,12 @@ webhooksRedis:
 cachingRedis:
   database: 1
   timeout: 300
-  ssl: false
+  ssl: true
 
   #Used only when redis.enabled is false. host and port are not used if
   #sentinels are given.
-  host: netbox-ptlsbox-netboxazure-standard.redis.cache.windows.net
-  port: 6379
+  host: netbox-ptlsbox.redis.cache.windows.net
+  port: 6380
   sentinels: []
   #  - mysentinel:26379
   #sentinelService: netbox-redis

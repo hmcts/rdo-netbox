@@ -21,6 +21,21 @@ module "postgresql_flexible" {
     }
   ]
 
+  pgsql_server_configuration = [
+    {
+      name  = azure.extensions
+      value = plpgsql
+    },
+    {
+      name  = azure.extensions
+      value = pg_stat_statements
+    },
+    {
+      name  = azure.extensions
+      value = pg_buffercache
+    }
+]
+
   pgsql_version = "14"
 }
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {

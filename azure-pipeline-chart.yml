@@ -28,6 +28,7 @@ jobs:
       chartNamespace: chart-tests
       acrName: "hmctspublic"
       chartPath: "./charts/"
+      valuesFile: "values.yaml"
 
 - job: Release
   # Make sure we have a tag to run this job
@@ -43,3 +44,4 @@ jobs:
       chartNamespace: chart-tests
       acrName: "hmctspublic"
       chartPath: "./charts/"
+      valuesFile: "values.yaml"

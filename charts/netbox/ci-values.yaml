@@ -254,7 +254,7 @@ fullnameOverride: ""
 
 ## Storage configuration for media
 persistence:
-  enabled: true
+  enabled: false
   ##
   ## Existing claim to use
   existingClaim: ""

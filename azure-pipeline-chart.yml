@@ -12,9 +12,28 @@ resources:
   - repository: cnp-library
     type: github
     name: hmcts/cnp-azuredevops-libraries
+    ref: endakelly-patch-1
     endpoint: 'hmcts'
 
 jobs:
+- job: Validate
+  # Make sure we have a tag to run this job
+ 
+  pool:
+    name: hmcts-sandbox-agent-pool
+  steps:
+  - template: steps/charts/validate.yaml@cnp-library
+    parameters:
+      chartName: netbox
+      chartReleaseName: netbox-ci-test
+      chartNamespace: netbox
+      acrName: "hmctspublic"
+      chartPath: "./charts/"
+      valuesFile: "./charts/netbox/ci-values.yaml"
+      businessArea: ss
+      environment: ptlsbox
+      serviceConnection: "DTS-SHAREDSERVICESPTL-SBOX"
+
 - job: Release
   # Make sure we have a tag to run this job
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
@@ -26,9 +45,8 @@ jobs:
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test
-      chartNamespace: chart-tests
-      serviceConnection: "DCD-CFTAPPS-SBOX"
-      aksResourceGroup: "cft-sbox-00-rg"
-      aksCluster: "cft-sbox-00-aks"
+      chartNamespace: netbox
       acrName: "hmctspublic"
       chartPath: "./charts/"
+      valuesFile: "./charts/netbox/ci-values.yaml"
+      environment: ss-ptlsbox

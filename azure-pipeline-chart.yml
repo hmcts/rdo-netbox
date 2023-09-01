@@ -32,7 +32,7 @@ jobs:
       valuesFile: "./charts/netbox/ci-values.yaml"
       businessArea: ss
       environment: ptlsbox
-      serviceConnection: "DTS-SHAREDSERVICEPTL-SBOX"
+      serviceConnection: "DTS-SHAREDSERVICESPTL-SBOX"
 
 - job: Release
   # Make sure we have a tag to run this job

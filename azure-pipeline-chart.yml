@@ -49,4 +49,5 @@ jobs:
       acrName: "hmctspublic"
       chartPath: "./charts/"
       valuesFile: "./charts/netbox/ci-values.yaml"
-      environment: ss-ptlsbox
+      businessArea: ss
+      environment: ptlsbox

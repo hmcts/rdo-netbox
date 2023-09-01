@@ -17,7 +17,6 @@ resources:
 jobs:
 - job: Validate
   # Make sure we have a tag to run this job
-  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
  
   pool:
     name: hmcts-sandbox-agent-pool

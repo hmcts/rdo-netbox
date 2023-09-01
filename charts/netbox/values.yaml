@@ -303,7 +303,9 @@ service:
 ingress:
   enabled: true
   hosts:
-    - netbox.sandbox.platform.hmcts.net
+    - host: netbox.sandbox.platform.hmcts.net
+      paths:
+        - /
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

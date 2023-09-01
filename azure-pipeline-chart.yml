@@ -15,7 +15,7 @@ resources:
     endpoint: 'hmcts'
 
 jobs:
-- job: Release
+- job: Validate
   # Make sure we have a tag to run this job
   condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
  
@@ -30,6 +30,13 @@ jobs:
       acrName: "hmctspublic"
       chartPath: "./charts/"
 
+- job: Release
+  # Make sure we have a tag to run this job
+  condition: startsWith(variables['Build.SourceBranch'], 'refs/tags/')
+ 
+  pool:
+    name: hmcts-sandbox-agent-pool
+  steps:
   - template: steps/charts/release.yaml@cnp-library
     parameters:
       chartName: netbox

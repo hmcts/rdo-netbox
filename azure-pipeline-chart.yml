@@ -22,13 +22,18 @@ jobs:
   pool:
     name: hmcts-sandbox-agent-pool
   steps:
+  - template: steps/charts/validate.yaml@cnp-library
+    parameters:
+      chartName: netbox
+      chartReleaseName: netbox-ci-test
+      chartNamespace: chart-tests
+      acrName: "hmctspublic"
+      chartPath: "./charts/"
+
   - template: steps/charts/release.yaml@cnp-library
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test
       chartNamespace: chart-tests
-      serviceConnection: "DCD-CFTAPPS-SBOX"
-      aksResourceGroup: "cft-sbox-00-rg"
-      aksCluster: "cft-sbox-00-aks"
       acrName: "hmctspublic"
       chartPath: "./charts/"

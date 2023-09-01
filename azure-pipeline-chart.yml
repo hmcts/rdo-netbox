@@ -51,3 +51,4 @@ jobs:
       valuesFile: "./charts/netbox/ci-values.yaml"
       businessArea: ss
       environment: ptlsbox
+      serviceConnection: "DTS-SHAREDSERVICESPTL-SBOX"

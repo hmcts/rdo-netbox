@@ -34,7 +34,7 @@ module "postgresql_flexible" {
       name  = azure.extensions
       value = pg_buffercache
     }
-]
+  ]
 
   pgsql_version = "14"
 }

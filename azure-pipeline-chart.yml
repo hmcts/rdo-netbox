@@ -28,7 +28,7 @@ jobs:
       chartNamespace: chart-tests
       acrName: "hmctspublic"
       chartPath: "./charts/"
-      valuesFile: "./charts/netbox/values.yaml"
+      valuesFile: "./charts/netbox/ci-values.yaml"
 
 - job: Release
   # Make sure we have a tag to run this job
@@ -44,4 +44,4 @@ jobs:
       chartNamespace: chart-tests
       acrName: "hmctspublic"
       chartPath: "./charts/"
-      valuesFile: "./charts/netbox/values.yaml"
+      valuesFile: "./charts/netbox/ci-values.yaml"

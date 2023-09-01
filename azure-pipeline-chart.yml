@@ -26,10 +26,12 @@ jobs:
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test
-      chartNamespace: chart-tests
+      chartNamespace: netbox
       acrName: "hmctspublic"
       chartPath: "./charts/"
       valuesFile: "./charts/netbox/ci-values.yaml"
+      businessArea: ss
+      environment: ptlsbox
 
 - job: Release
   # Make sure we have a tag to run this job
@@ -42,7 +44,8 @@ jobs:
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test
-      chartNamespace: chart-tests
+      chartNamespace: netbox
       acrName: "hmctspublic"
       chartPath: "./charts/"
       valuesFile: "./charts/netbox/ci-values.yaml"
+      environment: ss-ptlsbox

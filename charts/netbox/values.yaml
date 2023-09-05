@@ -53,6 +53,18 @@ cacheTimeout: 900
 # logs indefinitely. (Default: 90)
 changelogRetention: 90
 
+# CSRF settings.  Needed for netbox v3.2.0 and newer. For more information
+# see https://docs.netbox.dev/en/stable/configuration/optional-settings/#csrf_trusted_origins
+csrf:
+  # The name of the cookie to use for the cross-site request forgery (CSRF)
+  # authentication token.
+  cookieName: csrftoken
+  # Defines a list of trusted origins for unsafe (e.g. POST) requests. This is
+  # a pass-through to Django's CSRF_TRUSTED_ORIGINS setting. Note that each
+  # host listed must specify a scheme (e.g. http:// or `https://).
+  trustedOrigins:
+    - https://netbox.sandbox.platform.hmcts.net
+
 # API Cross-Origin Resource Sharing (CORS) settings. If originAllowAll
 # is set to true, all origins will be allowed. Otherwise, define a list of
 # allowed origins using either originWhitelist or originRegexWhitelist. For
@@ -306,6 +318,9 @@ ingress:
     - host: netbox.sandbox.platform.hmcts.net
       paths:
         - /
+  tls:
+    - hosts:
+        - netbox.sandbox.platform.hmcts.net
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -322,7 +337,7 @@ resources: {}
 nginx:
   image:
     repository: nginx
-    tag: 1.23.3-alpine
+    tag: 1.25.1
     pullPolicy: IfNotPresent
 
   resources: {}

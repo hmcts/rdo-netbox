@@ -10,6 +10,7 @@ module "redis" {
   family              = "C"
   sku_name            = "Standard"
   maxmemory_reserved  = "125"
+  maxmemory_delta     = "125"
 
   private_endpoint_enabled      = true
   public_network_access_enabled = false

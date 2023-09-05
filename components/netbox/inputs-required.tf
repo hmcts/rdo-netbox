@@ -42,5 +42,5 @@ variable "env" {
 
 }
 variable "collation" {
-  default = "en_GB.utf8"
+  default = "en_US.utf8"
 }

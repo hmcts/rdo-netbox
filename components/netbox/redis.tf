@@ -9,6 +9,7 @@ module "redis" {
   business_area       = "sds"
   family              = "C"
   sku_name            = "Standard"
+  max_memory_reserved = "125"
 
   private_endpoint_enabled      = true
   public_network_access_enabled = false

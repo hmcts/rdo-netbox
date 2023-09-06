@@ -30,7 +30,6 @@ stages:
 
   - stage: init_ptl
     displayName: Init Prod
-    dependsOn: netbox_sbox
     jobs:
       - template: pipeline-templates/copy_files.yaml
         parameters:

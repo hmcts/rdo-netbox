@@ -9,7 +9,7 @@ pr:
     - master
 resources:
   repositories:
-  - repository: cnp-library
+  - repository: cnp-azuredevops-libraries
     type: github
     name: hmcts/cnp-azuredevops-libraries
     ref: endakelly-patch-1
@@ -22,7 +22,7 @@ jobs:
   pool:
     name: hmcts-sandbox-agent-pool
   steps:
-  - template: steps/charts/validate.yaml@cnp-library
+  - template: steps/charts/validate.yaml@cnp-azuredevops-libraries
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test
@@ -41,7 +41,7 @@ jobs:
   pool:
     name: hmcts-sandbox-agent-pool
   steps:
-  - template: steps/charts/release.yaml@cnp-library
+  - template: steps/charts/release.yaml@cnp-azuredevops-libraries
     parameters:
       chartName: netbox
       chartReleaseName: netbox-ci-test

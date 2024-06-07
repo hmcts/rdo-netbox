@@ -24,6 +24,7 @@ parameters:
     values:
       - plan
       - apply
+      - destroy
 
   - name: location
     displayName: Location

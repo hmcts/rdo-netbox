@@ -7,7 +7,7 @@ terraform {
     azurerm = {
       source = "hashicorp/azurerm"
       # version pinned to 3.53.0 b/c of issue https://github.com/hashicorp/terraform-provider-azurerm/issues/21967
-      version = "3.53.0"
+      version = "3.107.0"
 
     }
   }
